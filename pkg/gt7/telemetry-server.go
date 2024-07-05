@@ -22,20 +22,20 @@ func sendHeartBeat(conn *net.UDPConn) {
 }
 
 func RunTelemetryServer(ch chan TelemetryFrame, errCh chan error) {
-	heartbeatPort := fmt.Sprintf("%s:%s", playstationIP, heartbeatPort)
-	sHeartbeat, err := net.ResolveUDPAddr("udp5", heartbeatPort)
+	sHeartbeat, err := net.ResolveUDPAddr("udp4", net.JoinHostPort(playstationIP, heartbeatPort))
 	if err != nil {
-		log.DefaultLogger.Warn("Heartbeat address resolution not working.")
+		log.DefaultLogger.Warn("Heartbeat address resolution not working." + err.Error())
 		return
 	}
-	heartbeatConn, err := net.DialUDP("udp5", nil, sHeartbeat)
+
+	heartbeatConn, err := net.DialUDP("udp4", nil, sHeartbeat)
 	if err != nil {
 		log.DefaultLogger.Warn("Heartbeat not working.")
 		return
 	}
 	sendHeartBeat(heartbeatConn)
-	port := fmt.Sprintf("%s:%s", playstationIP, serverPort)
-	s, err := net.ResolveUDPAddr("udp4", port)
+
+	s, err := net.ResolveUDPAddr("udp4", net.JoinHostPort(playstationIP, serverPort))
 	if err != nil {
 		errCh <- err
 		return
