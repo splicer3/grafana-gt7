@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
+	"golang.org/x/crypto/salsa20"
 	"math"
 	"time"
 	"unsafe"
@@ -84,6 +85,33 @@ type TelemetryFrame struct {
 	InRace            bool
 }
 
+func salsa20Dec(dat []byte) []byte {
+	keyStr := "Simulator Interface Packet GT7 ver 0.0"
+	var key [32]byte
+	copy(key[:], keyStr[:32])
+
+	// Seed IV is always located here
+	oiv := dat[0x40:0x44]
+	iv1 := binary.LittleEndian.Uint32(oiv)
+
+	// Notice DEADBEAF, not DEADBEEF
+	iv2 := iv1 ^ 0xDEADBEAF
+
+	iv := make([]byte, 8)
+	binary.LittleEndian.PutUint32(iv[0:4], iv2)
+	binary.LittleEndian.PutUint32(iv[4:8], iv1)
+
+	ddata := make([]byte, len(dat))
+	salsa20.XORKeyStream(ddata, dat, iv, &key)
+
+	magic := binary.LittleEndian.Uint32(ddata[0:4])
+	if magic != 0x47375330 {
+		return []byte{}
+	}
+
+	return ddata
+}
+
 func ReadPacket(b []byte) (*TelemetryFrame, error) {
 	buf := bytes.NewReader(b)
 
@@ -93,7 +121,9 @@ func ReadPacket(b []byte) (*TelemetryFrame, error) {
 		return nil, err
 	}
 
-	frame := convertTelemetryValues(frameRaw)
+	dFrame := salsa20Dec(frameRaw)
+
+	frame := convertTelemetryValues(dFrame)
 
 	return frame, nil
 }

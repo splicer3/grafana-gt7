@@ -31,7 +31,7 @@ unzip ${GRAFANA_PACKAGE_NAME}
 # Copy plugin into Grafana package
 echo -e "${GREEN}Copy plugin into grafana package${NC}"
 mkdir -p "grafana-${GRAFANA_VERSION}/data/plugins"
-cp -r ../dist/alexanderzobnin-simracingtelemetry-datasource "./grafana-${GRAFANA_VERSION}/data/plugins"
+cp -r ../../../dist/alexanderzobnin-simracingtelemetry-datasource "./grafana-${GRAFANA_VERSION}/data/plugins"
 
 # Copy configs to the Grafana
 echo -e "${GREEN}Copy configs into grafana package${NC}"
