@@ -8,7 +8,7 @@ import (
 
 const (
 	serverPort    = "33740"
-	playstationIP = "192.168.1.5"
+	playstationIP = "192.168.1.8"
 )
 
 func RunTelemetryServer(ch chan TelemetryFrame, errCh chan error) {

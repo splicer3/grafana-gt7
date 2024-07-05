@@ -10,7 +10,7 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-GRAFANA_VERSION='8.5.2'
+GRAFANA_VERSION='11.1.0'
 GRAFANA_DOWNLOAD_URL="https://dl.grafana.com/oss/release/grafana-${GRAFANA_VERSION}.windows-amd64.zip"
 GRAFANA_PACKAGE_NAME="grafana-${GRAFANA_VERSION}.windows-amd64.zip"
 

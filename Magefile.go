@@ -15,6 +15,11 @@ func Hello() {
 	fmt.Println("hello plugin developer!")
 }
 
+func BuildLinux() {
+	b := build.Build{}
+	mg.Deps(b.Linux)
+}
+
 func BuildWindows() { //revive:disable-line
 	b := build.Build{}
 	mg.Deps(b.Windows)

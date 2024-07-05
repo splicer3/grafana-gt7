@@ -5,6 +5,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"github.com/alexanderzobnin/grafana-simracing-telemetry/pkg/gt7"
 	"github.com/alexanderzobnin/grafana-simracing-telemetry/pkg/outgauge"
 	"time"
 

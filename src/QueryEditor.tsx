@@ -10,7 +10,7 @@ import { accOptions } from './accOptions';
 import { iRacingOptions } from './iRacingOptions';
 import { forzaHorizonOptions } from './forzaHorizonOptions';
 import { outGaugeOptions } from './outGaugeOptions';
-import { gt7Options } from "./gt7Options";
+import { gt7Options } from './gt7Options';
 
 export const sourceOptions = [
   { label: 'DiRT Rally 2.0', value: 'dirtRally2' },
@@ -19,7 +19,7 @@ export const sourceOptions = [
   { label: 'iRacing', value: 'iRacing' },
   { label: 'BeamNG Drive', value: 'beamng' },
   { label: 'OutGauge', value: 'outgauge' },
-  {label: 'Gran Turismo 7', value: 'gt7'},
+  { label: 'Gran Turismo 7', value: 'gt7' },
 ];
 
 type Props = QueryEditorProps<DataSource, TelemetryQuery, MyDataSourceOptions>;
@@ -65,8 +65,7 @@ export class QueryEditor extends PureComponent<Props> {
       options = iRacingOptions;
     } else if (source === 'outgauge' || source === 'beamng') {
       options = outGaugeOptions;
-    }
-    else if (source === 'gt7') {
+    } else if (source === 'gt7') {
       options = gt7Options;
     }
 
