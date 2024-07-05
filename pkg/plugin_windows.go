@@ -171,6 +171,9 @@ func (d *SimracingTelemetryDatasource) RunStream(ctx context.Context, req *backe
 	outGaugeChan := make(chan outgauge.OutgaugeStruct)
 	outGaugeErrorChan := make(chan error)
 
+	gt7TelemetryChan := make(chan gt7.TelemetryFrame)
+	gt7TelemetryErrorChan := make(chan error)
+
 	if req.Path == "dirtRally2" {
 		go dirtrally.RunTelemetryServer(telemetryChan, telemetryErrorChan)
 	} else if req.Path == "acc" {
@@ -182,6 +185,8 @@ func (d *SimracingTelemetryDatasource) RunStream(ctx context.Context, req *backe
 		go forza.RunTelemetryServer(forzaTelemetryChan, forzaTelemetryErrorChan)
 	} else if req.Path == "beamng" || req.Path == "outgauge" {
 		go outgauge.RunTelemetryServer(outGaugeChan, outGaugeErrorChan)
+	} else if req.Path == "gt7" {
+		go gt7.RunTelemetryServer(gt7TelemetryChan, gt7TelemetryErrorChan)
 	}
 
 	lastTimeSent := time.Now()
@@ -275,6 +280,20 @@ func (d *SimracingTelemetryDatasource) RunStream(ctx context.Context, req *backe
 
 			lastTimeSent = time.Now()
 			err = sender.SendFrame(frame, data.IncludeAll)
+			if err != nil {
+				log.DefaultLogger.Error("Error sending frame", "error", err)
+				continue
+			}
+
+		case telemetryFrame := <-gt7TelemetryChan:
+			if time.Now().Before(lastTimeSent.Add(time.Second / 60)) {
+				// Drop frame
+				continue
+			}
+
+			frame := gt7.TelemetryToDataFrame(telemetryFrame)
+			lastTimeSent = time.Now()
+			err := sender.SendFrame(frame, data.IncludeAll)
 			if err != nil {
 				log.DefaultLogger.Error("Error sending frame", "error", err)
 				continue
