@@ -1,7 +1,6 @@
 package gt7
 
 import (
-	"bytes"
 	"encoding/binary"
 	"encoding/json"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
@@ -9,7 +8,6 @@ import (
 	"golang.org/x/crypto/salsa20"
 	"math"
 	"time"
-	"unsafe"
 )
 
 type TelemetryFrame struct {
@@ -106,6 +104,7 @@ func salsa20Dec(dat []byte) []byte {
 
 	magic := binary.LittleEndian.Uint32(ddata[0:4])
 	if magic != 0x47375330 {
+		log.DefaultLogger.Warn("Magic number mismatch")
 		return []byte{}
 	}
 
@@ -113,15 +112,7 @@ func salsa20Dec(dat []byte) []byte {
 }
 
 func ReadPacket(b []byte) (*TelemetryFrame, error) {
-	buf := bytes.NewReader(b)
-
-	frameRaw := make([]byte, unsafe.Sizeof(TelemetryFrame{}))
-	err := binary.Read(buf, binary.LittleEndian, frameRaw)
-	if err != nil {
-		return nil, err
-	}
-
-	dFrame := salsa20Dec(frameRaw)
+	dFrame := salsa20Dec(b)
 
 	frame := convertTelemetryValues(dFrame)
 

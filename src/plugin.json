@@ -61,6 +61,11 @@
       "type": "dashboard",
       "name": "Forza Basic",
       "path": "dashboards/Forza/Forza_Basic.json"
+    },
+    {
+      "type": "dashboard",
+      "name": "Gran Turismo 7",
+      "path": "dashboards/GT7/Gran_Turismo_7.json"
     }
   ],
   "dependencies": {

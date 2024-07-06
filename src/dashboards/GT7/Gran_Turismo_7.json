@@ -1,0 +1,1967 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE",
+      "label": "alexanderzobnin-simracingtelemetry-datasource",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "alexanderzobnin-simracingtelemetry-datasource",
+      "pluginName": "Simracing Telemetry"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "alexanderzobnin-simracingtelemetry-datasource",
+      "name": "Simracing Telemetry",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "11.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 9000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 6500
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 17,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "maxDataPoints": 2,
+      "options": {
+        "displayMode": "lcd",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "RPM",
+          "withStreaming": true
+        }
+      ],
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": [
+              "lastNotNull"
+            ]
+          }
+        }
+      ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 95
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 18,
+        "y": 0
+      },
+      "id": 15,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "WaterTemp",
+          "withStreaming": true
+        }
+      ],
+      "title": "Water Temperature",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 130
+              },
+              {
+                "color": "red",
+                "value": 140
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 21,
+        "y": 0
+      },
+      "id": 16,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "OilTemp",
+          "withStreaming": true
+        }
+      ],
+      "title": "Oil Temp",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "fieldMinMax": false,
+          "mappings": [],
+          "max": 400,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 200
+              },
+              {
+                "color": "red",
+                "value": 300
+              }
+            ]
+          },
+          "unit": "velocitykmh"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 7,
+        "x": 0,
+        "y": 2
+      },
+      "id": 6,
+      "maxDataPoints": 2,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "text": {}
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "CarSpeed",
+          "withStreaming": true
+        }
+      ],
+      "title": "Speed",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 2,
+                  "text": "R"
+                },
+                "15": {
+                  "index": 0,
+                  "text": "N"
+                },
+                "-1": {
+                  "index": 1,
+                  "text": "R"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 4,
+        "x": 7,
+        "y": 2
+      },
+      "id": 4,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "CurrentGear",
+          "withStreaming": true
+        }
+      ],
+      "title": "Gear",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [
+            {
+              "options": {
+                "-1": {
+                  "index": 0,
+                  "text": "NA"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "max": 2,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.3
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "pressurebar"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 11,
+        "y": 2
+      },
+      "id": 10,
+      "maxDataPoints": 2,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "text": {}
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "Boost",
+          "withStreaming": true
+        }
+      ],
+      "title": "Boost",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 70
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 150
+              },
+              {
+                "color": "dark-red",
+                "value": 190
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 1,
+        "x": 18,
+        "y": 3
+      },
+      "id": 32,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "TyreTempFL",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 2,
+        "x": 19,
+        "y": 3
+      },
+      "id": 23,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "TyreSpeedFL",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "pressurepsi"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 2,
+        "x": 21,
+        "y": 3
+      },
+      "id": 25,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "refId": "A",
+          "source": "acc",
+          "telemetry": "WheelsPressureFL",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 70
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 150
+              },
+              {
+                "color": "dark-red",
+                "value": 190
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 1,
+        "x": 23,
+        "y": 3
+      },
+      "id": 34,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "TyreTempFR",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "super-light-yellow",
+                "value": 300
+              },
+              {
+                "color": "orange",
+                "value": 500
+              },
+              {
+                "color": "red",
+                "value": 800
+              },
+              {
+                "color": "dark-red",
+                "value": 900
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 1,
+        "x": 20,
+        "y": 5
+      },
+      "id": 18,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "refId": "A",
+          "source": "acc",
+          "telemetry": "BrakeTempFL",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "super-light-yellow",
+                "value": 300
+              },
+              {
+                "color": "orange",
+                "value": 500
+              },
+              {
+                "color": "red",
+                "value": 800
+              },
+              {
+                "color": "dark-red",
+                "value": 900
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 1,
+        "x": 21,
+        "y": 5
+      },
+      "id": 19,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "refId": "A",
+          "source": "acc",
+          "telemetry": "BrakeTempFR",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 11,
+        "y": 7
+      },
+      "id": 43,
+      "options": {
+        "displayMode": "lcd",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 109,
+        "namePlacement": "left",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "Brake",
+          "withStreaming": true
+        }
+      ],
+      "title": "Brake",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 14,
+        "y": 7
+      },
+      "id": 42,
+      "options": {
+        "displayMode": "lcd",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 109,
+        "namePlacement": "left",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "Throttle",
+          "withStreaming": true
+        }
+      ],
+      "title": "Throttle",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 70
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 150
+              },
+              {
+                "color": "dark-red",
+                "value": 190
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 1,
+        "x": 18,
+        "y": 8
+      },
+      "id": 33,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "TyreTempRL",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "super-light-yellow",
+                "value": 300
+              },
+              {
+                "color": "orange",
+                "value": 500
+              },
+              {
+                "color": "red",
+                "value": 800
+              },
+              {
+                "color": "dark-red",
+                "value": 900
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 1,
+        "x": 20,
+        "y": 8
+      },
+      "id": 20,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "refId": "A",
+          "source": "acc",
+          "telemetry": "BrakeTempRL",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "super-light-yellow",
+                "value": 300
+              },
+              {
+                "color": "orange",
+                "value": 500
+              },
+              {
+                "color": "red",
+                "value": 800
+              },
+              {
+                "color": "dark-red",
+                "value": 900
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 1,
+        "x": 21,
+        "y": 8
+      },
+      "id": 21,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "refId": "A",
+          "source": "acc",
+          "telemetry": "BrakeTempRR",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 70
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 150
+              },
+              {
+                "color": "dark-red",
+                "value": 190
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 1,
+        "x": 23,
+        "y": 8
+      },
+      "id": 35,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "TyreTempRR",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Fuel",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "litre"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 11
+      },
+      "id": 8,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "CurrentFuel",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "displayName": "Max Fuel",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "litre"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 3,
+        "y": 11
+      },
+      "id": 40,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "FuelCapacity",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "pressurepsi"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 2,
+        "x": 19,
+        "y": 11
+      },
+      "id": 24,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "refId": "A",
+          "source": "acc",
+          "telemetry": "WheelsPressureRL",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "pressurepsi"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 2,
+        "x": 21,
+        "y": 11
+      },
+      "id": 26,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "refId": "A",
+          "source": "acc",
+          "telemetry": "WheelsPressureRR",
+          "withStreaming": true
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 10,
+          "displayName": "Last lap",
+          "mappings": [
+            {
+              "options": {
+                "-0.001": {
+                  "index": 0,
+                  "text": "N/A"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "dthms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 11,
+        "x": 0,
+        "y": 14
+      },
+      "id": 41,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "LastLap",
+          "withStreaming": true
+        }
+      ],
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": "LastLap",
+              "operator": "/",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [
+                "LastLap"
+              ],
+              "reducer": "lastNotNull"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-simracingtelemetry-datasource",
+        "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Current Lap",
+          "mappings": [
+            {
+              "options": {
+                "-0.001": {
+                  "index": 0,
+                  "text": "N/A"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 11,
+        "y": 14
+      },
+      "id": 44,
+      "maxDataPoints": 2,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-simracingtelemetry-datasource",
+            "uid": "${DS_ALEXANDERZOBNIN-SIMRACINGTELEMETRY-DATASOURCE}"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "CurrentLap",
+          "withStreaming": true
+        }
+      ],
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": "LastLap",
+              "operator": "/",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [
+                "LastLap"
+              ],
+              "reducer": "lastNotNull"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": [
+    "granturismo"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-1m",
+    "to": "now"
+  },
+  "timeRangeUpdatedDuringEditOrView": false,
+  "timepicker": {},
+  "timezone": "",
+  "title": "Gran Turismo 7",
+  "uid": "a844Hqknz",
+  "version": 5,
+  "weekStart": ""
+}

@@ -1,0 +1,16 @@
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+      - "33740:33740/udp"
+    volumes:
+      - ./dist:/var/lib/grafana/plugins/alexanderzobnin-simracingtelemetry-datasource
+      - ./provisioning:/etc/grafana/provisioning
+      - grafana-storage:/var/lib/grafana
+    environment:
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=alexanderzobnin-simracingtelemetry-datasource
+    user: "472"
+
+volumes:
+  grafana-storage:

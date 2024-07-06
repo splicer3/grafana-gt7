@@ -17,7 +17,7 @@ func Hello() {
 
 func BuildLinux() {
 	b := build.Build{}
-	mg.Deps(b.Linux)
+	mg.Deps(b.LinuxARM64)
 }
 
 func BuildWindows() { //revive:disable-line
@@ -26,4 +26,4 @@ func BuildWindows() { //revive:disable-line
 }
 
 // Default configures the default target.
-var Default = BuildWindows
+var Default = BuildLinux

@@ -22,57 +22,72 @@ func sendHeartBeat(conn *net.UDPConn) {
 }
 
 func RunTelemetryServer(ch chan TelemetryFrame, errCh chan error) {
-	sHeartbeat, err := net.ResolveUDPAddr("udp4", net.JoinHostPort(playstationIP, heartbeatPort))
+	// Heartbeat connection setup
+	heartbeatAddr, err := net.ResolveUDPAddr("udp4", net.JoinHostPort(playstationIP, heartbeatPort))
 	if err != nil {
-		log.DefaultLogger.Warn("Heartbeat address resolution not working." + err.Error())
+		errCh <- fmt.Errorf("heartbeat address resolution failed: %v", err)
 		return
 	}
 
-	heartbeatConn, err := net.DialUDP("udp4", nil, sHeartbeat)
+	heartbeatConn, err := net.DialUDP("udp4", nil, heartbeatAddr)
 	if err != nil {
-		log.DefaultLogger.Warn("Heartbeat not working.")
+		errCh <- fmt.Errorf("heartbeat connection failed: %v", err)
 		return
 	}
-	sendHeartBeat(heartbeatConn)
+	defer heartbeatConn.Close()
 
-	s, err := net.ResolveUDPAddr("udp4", net.JoinHostPort(playstationIP, serverPort))
+	// Server connection setup
+	serverAddr, err := net.ResolveUDPAddr("udp4", net.JoinHostPort("", serverPort))
 	if err != nil {
-		errCh <- err
+		errCh <- fmt.Errorf("server address resolution failed: %v", err)
 		return
 	}
 
-	connection, err := net.ListenUDP("udp4", s)
+	serverConn, err := net.ListenUDP("udp4", serverAddr)
 	if err != nil {
-		errCh <- err
+		errCh <- fmt.Errorf("server listener failed: %v", err)
 		return
 	}
+	defer serverConn.Close()
+
 	log.DefaultLogger.Info("Starting telemetry server for Gran Turismo 7")
 
-	defer connection.Close()
 	buffer := make([]byte, 4096)
-
-	lastTimeSent := time.Now()
+	lastHeartbeatTime := time.Now()
 
 	for {
-		n, _, err := connection.ReadFromUDP(buffer)
+		// Set read deadline to prevent blocking indefinitely
+		err = serverConn.SetReadDeadline(time.Now().Add(time.Second))
 		if err != nil {
-			errCh <- err
+			log.DefaultLogger.Warn("SetReadDeadline failed", "err", err.Error())
 			return
 		}
 
-		if time.Now().After(lastTimeSent.Add(time.Second)) {
+		n, _, err := serverConn.ReadFromUDP(buffer)
+		if err != nil {
+			if netErr, ok := err.(net.Error); ok && netErr.Timeout() {
+				// It's just a timeout, continue and send heartbeat if needed
+			} else {
+				log.DefaultLogger.Warn("ReadFromUDP failed", "err", err.Error())
+				return
+			}
+		}
+
+		if n > 0 {
+			fmt.Printf("Read %v bytes\n", n)
+			packetBuffer := buffer[0:n]
+			p, err := ReadPacket(packetBuffer)
+			if err != nil {
+				log.DefaultLogger.Warn("ReadPacket failed", "err", err.Error())
+				return
+			}
+			ch <- *p
+		}
+
+		// Send heartbeat if a second has passed since the last one
+		if time.Since(lastHeartbeatTime) >= time.Second {
 			sendHeartBeat(heartbeatConn)
+			lastHeartbeatTime = time.Now()
 		}
-
-		fmt.Printf("Read %v bytes\n", n)
-
-		packetBuffer := buffer[0:n]
-		p, err := ReadPacket(packetBuffer)
-		if err != nil {
-			errCh <- err
-			return
-		}
-
-		ch <- *p
 	}
 }
