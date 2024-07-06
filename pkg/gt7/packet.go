@@ -29,10 +29,10 @@ type TelemetryFrame struct {
 	TyreSpeedRL       float32
 	TyreSpeedRR       float32
 	CarSpeed          float32
-	TyreSlipRatioFL   string
-	TyreSlipRatioFR   string
-	TyreSlipRatioRL   string
-	TyreSlipRatioRR   string
+	TyreSlipRatioFL   float32
+	TyreSlipRatioFR   float32
+	TyreSlipRatioRL   float32
+	TyreSlipRatioRR   float32
 	TimeOnTrack       time.Duration
 	TotalLaps         int16
 	CurrentPosition   int16
@@ -120,7 +120,7 @@ func ReadPacket(b []byte) (*TelemetryFrame, error) {
 }
 
 func convertTelemetryValues(data []byte) *TelemetryFrame {
-	return &TelemetryFrame{
+	returnedFrame := TelemetryFrame{
 		PackageID:         int32(binary.LittleEndian.Uint32(data[0x70:0x74])),
 		BestLap:           int32(binary.LittleEndian.Uint32(data[0x78:0x7C])),
 		LastLap:           int32(binary.LittleEndian.Uint32(data[0x7C:0x80])),
@@ -130,6 +130,10 @@ func convertTelemetryValues(data []byte) *TelemetryFrame {
 		FuelCapacity:      math.Float32frombits(binary.LittleEndian.Uint32(data[0x48:0x4C])),
 		CurrentFuel:       math.Float32frombits(binary.LittleEndian.Uint32(data[0x44:0x48])),
 		Boost:             math.Float32frombits(binary.LittleEndian.Uint32(data[0x50:0x54])) - 1,
+		TyreDiameterFL:    math.Float32frombits(binary.LittleEndian.Uint32(data[0xB4:0xB8])),
+		TyreDiameterFR:    math.Float32frombits(binary.LittleEndian.Uint32(data[0xB8:0xBC])),
+		TyreDiameterRL:    math.Float32frombits(binary.LittleEndian.Uint32(data[0xBC:0xC0])),
+		TyreDiameterRR:    math.Float32frombits(binary.LittleEndian.Uint32(data[0xC0:0xC4])),
 		CarSpeed:          3.6 * math.Float32frombits(binary.LittleEndian.Uint32(data[0x4C:0x50])),
 		TotalLaps:         int16(binary.LittleEndian.Uint16(data[0x76:0x78])),
 		CurrentPosition:   int16(binary.LittleEndian.Uint16(data[0x84:0x86])),
@@ -145,6 +149,14 @@ func convertTelemetryValues(data []byte) *TelemetryFrame {
 		WaterTemp:         math.Float32frombits(binary.LittleEndian.Uint32(data[0x58:0x5C])),
 		OilPressure:       math.Float32frombits(binary.LittleEndian.Uint32(data[0x54:0x58])),
 		RideHeight:        1000 * math.Float32frombits(binary.LittleEndian.Uint32(data[0x38:0x3C])),
+		TyreTempFL:        math.Float32frombits(binary.LittleEndian.Uint32(data[0x60:0x64])),
+		TyreTempFR:        math.Float32frombits(binary.LittleEndian.Uint32(data[0x64:0x68])),
+		TyreTempRL:        math.Float32frombits(binary.LittleEndian.Uint32(data[0x68:0x6C])),
+		TyreTempRR:        math.Float32frombits(binary.LittleEndian.Uint32(data[0x6C:0x70])),
+		SuspensionFL:      math.Float32frombits(binary.LittleEndian.Uint32(data[0xC4:0xC8])),
+		SuspensionFR:      math.Float32frombits(binary.LittleEndian.Uint32(data[0xC8:0xCC])),
+		SuspensionRL:      math.Float32frombits(binary.LittleEndian.Uint32(data[0xCC:0xD0])),
+		SuspensionRR:      math.Float32frombits(binary.LittleEndian.Uint32(data[0xD0:0xD4])),
 		PositionX:         math.Float32frombits(binary.LittleEndian.Uint32(data[0x04:0x08])),
 		PositionY:         math.Float32frombits(binary.LittleEndian.Uint32(data[0x08:0x0C])),
 		PositionZ:         math.Float32frombits(binary.LittleEndian.Uint32(data[0x0C:0x10])),
@@ -160,6 +172,27 @@ func convertTelemetryValues(data []byte) *TelemetryFrame {
 		IsPaused:          (data[0x8E] & 0b00000010) != 0,
 		InRace:            (data[0x8E] & 0b00000001) != 0,
 	}
+
+	// Tyre speed calculation
+	returnedFrame.TyreSpeedFL = float32(math.Abs(float64(3.6 * returnedFrame.TyreDiameterFL * math.Float32frombits(binary.LittleEndian.Uint32(data[0xA4:0xA8])))))
+	returnedFrame.TyreSpeedFR = float32(math.Abs(float64(3.6 * returnedFrame.TyreDiameterFR * math.Float32frombits(binary.LittleEndian.Uint32(data[0xA8:0xAC])))))
+	returnedFrame.TyreSpeedRL = float32(math.Abs(float64(3.6 * returnedFrame.TyreDiameterRL * math.Float32frombits(binary.LittleEndian.Uint32(data[0xAC:0xB0])))))
+	returnedFrame.TyreSpeedRR = float32(math.Abs(float64(3.6 * returnedFrame.TyreDiameterRR * math.Float32frombits(binary.LittleEndian.Uint32(data[0xB0:0xB4])))))
+
+	// Tyre slip ratio calculation
+	if returnedFrame.CarSpeed > 0 {
+		returnedFrame.TyreSlipRatioFL = returnedFrame.TyreSpeedFL / returnedFrame.CarSpeed
+		returnedFrame.TyreSlipRatioFR = returnedFrame.TyreSpeedFR / returnedFrame.CarSpeed
+		returnedFrame.TyreSlipRatioRL = returnedFrame.TyreSpeedRL / returnedFrame.CarSpeed
+		returnedFrame.TyreSlipRatioRR = returnedFrame.TyreSpeedRR / returnedFrame.CarSpeed
+	} else {
+		returnedFrame.TyreSlipRatioFL = -1 // Using -1 to represent '  –  '
+		returnedFrame.TyreSlipRatioFR = -1
+		returnedFrame.TyreSlipRatioRL = -1
+		returnedFrame.TyreSlipRatioRR = -1
+	}
+
+	return &returnedFrame
 }
 
 func telemetryFrameToMap(frame TelemetryFrame) map[string]float32 {
