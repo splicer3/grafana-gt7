@@ -15,15 +15,25 @@ func Hello() {
 	fmt.Println("hello plugin developer!")
 }
 
-func BuildLinux() {
+func LinuxARM64() {
 	b := build.Build{}
 	mg.Deps(b.LinuxARM64)
 }
 
-func BuildWindows() { //revive:disable-line
+func Linux() {
+	b := build.Build{}
+	mg.Deps(b.Linux())
+}
+
+func LinuxARM() {
+	b := build.Build{}
+	mg.Deps(b.LinuxARM())
+}
+
+func Windows() { //revive:disable-line
 	b := build.Build{}
 	mg.Deps(b.Windows)
 }
 
 // Default configures the default target.
-var Default = BuildLinux
+var Default = LinuxARM64
