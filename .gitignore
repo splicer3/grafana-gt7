@@ -30,3 +30,5 @@ e2e-results/
 .idea
 /raspirelease/provisioning/dashboards/dashboards.yaml
 /raspirelease/docker-compose.yaml
+/LinuxARM64Release/
+/grafana-simracing-LinuxARM64-releaseDocker.zip
