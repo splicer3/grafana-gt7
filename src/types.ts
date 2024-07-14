@@ -18,6 +18,7 @@ export const defaultQuery: Partial<TelemetryQuery> = {
  * These are options configured for each DataSource instance
  */
 export interface MyDataSourceOptions extends DataSourceJsonData {
+  playstationIP: string;
   path?: string;
 }
 

@@ -1,6 +1,6 @@
 apiVersion: 1
 
 datasources:
-  - name: Simracing Telemetry
+  - name: GT7 Telemetry
     type: gt7-telemetry
     isDefault: true

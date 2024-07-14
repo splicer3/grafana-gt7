@@ -46,6 +46,6 @@ cp -r ./provisioning "${releaseFolder}"
 echo "${GREEN}Copying docker-compose.yaml...r${NC}"
 cp docker-compose.yaml "${releaseFolder}"
 
-zip -r "grafana-simracing-${build_os}-releaseDocker.zip" "${releaseFolder}"
+zip -r "grafana-gt7-${build_os}-releaseDocker.zip" "${releaseFolder}"
 
 rm -rf ./dist

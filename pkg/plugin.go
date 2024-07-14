@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/splicer3/grafana-gt7/pkg/gt7"
+	"net"
 	"time"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
@@ -15,45 +16,67 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/live"
 )
 
-var SharedMemoryUpdateInterval = time.Second / 60
-
-// Make sure SimracingTelemetryDatasource implements required interfaces. This is important to do
-// since otherwise we will only get a not implemented error response from plugin in
-// runtime. In this example datasource instance implements backend.QueryDataHandler,
-// backend.CheckHealthHandler, backend.StreamHandler interfaces. Plugin should not
-// implement all these interfaces - only those which are required for a particular task.
-// For example if plugin does not need streaming functionality then you are free to remove
-// methods that implement backend.StreamHandler. Implementing instancemgmt.InstanceDisposer
-// is useful to clean up resources used by previous datasource instance when a new datasource
-// instance created upon datasource settings changed.
 var (
-	_ backend.QueryDataHandler      = (*SimracingTelemetryDatasource)(nil)
-	_ backend.CheckHealthHandler    = (*SimracingTelemetryDatasource)(nil)
-	_ backend.StreamHandler         = (*SimracingTelemetryDatasource)(nil)
-	_ instancemgmt.InstanceDisposer = (*SimracingTelemetryDatasource)(nil)
+	_ backend.QueryDataHandler      = (*GT7TelemetryDatasource)(nil)
+	_ backend.CheckHealthHandler    = (*GT7TelemetryDatasource)(nil)
+	_ backend.StreamHandler         = (*GT7TelemetryDatasource)(nil)
+	_ instancemgmt.InstanceDisposer = (*GT7TelemetryDatasource)(nil)
 )
 
-// NewSimracingTelemetryDatasource creates a new datasource instance.
-func NewSimracingTelemetryDatasource(_ backend.DataSourceInstanceSettings) (instancemgmt.Instance, error) {
-	return &SimracingTelemetryDatasource{}, nil
+type Options struct {
+	PlaystationIP string `json:"playstationIP"`
 }
 
-// SimracingTelemetryDatasource is an example datasource which can respond to data queries, reports
-// its health and has streaming skills.
-type SimracingTelemetryDatasource struct{}
+func getDatasourceSettings(s backend.DataSourceInstanceSettings) (*Options, error) {
+	settings := &Options{}
 
-// Dispose here tells plugin SDK that plugin wants to clean up resources when a new instance
-// created. As soon as datasource settings change detected by SDK old datasource instance will
-// be disposed and a new one will be created using NewSimracingTelemetryDatasource factory function.
-func (d *SimracingTelemetryDatasource) Dispose() {
+	if err := json.Unmarshal(s.JSONData, settings); err != nil {
+		return nil, err
+	}
+
+	return settings, nil
+}
+
+// NewGT7TelemetryDatasource creates a new datasource instance.
+func NewGT7TelemetryDatasource(s backend.DataSourceInstanceSettings) (instancemgmt.Instance, error) {
+	settings, err := getDatasourceSettings(s)
+	if err != nil {
+		return nil, err
+	}
+
+	return &GT7TelemetryDatasource{
+		playstationIP: settings.PlaystationIP,
+		streamConn:    nil,
+		heartbeatConn: nil,
+	}, nil
+}
+
+// GT7TelemetryDatasource is an example datasource which can respond to data queries, reports
+// its health and has streaming skills.
+type GT7TelemetryDatasource struct {
+	playstationIP string
+	streamConn    *net.UDPConn
+	heartbeatConn *net.UDPConn
+}
+
+func (d *GT7TelemetryDatasource) Dispose() {
 	// Clean up datasource instance resources.
+	if d.streamConn != nil {
+		d.streamConn.Close()
+		d.streamConn = nil
+	}
+
+	if d.heartbeatConn != nil {
+		d.heartbeatConn.Close()
+		d.heartbeatConn = nil
+	}
 }
 
 // QueryData handles multiple queries and returns multiple responses.
 // req contains the queries []DataQuery (where each query contains RefID as a unique identifier).
 // The QueryDataResponse contains a map of RefID to the response for each query, and each response
 // contains Frames ([]*Frame).
-func (d *SimracingTelemetryDatasource) QueryData(ctx context.Context, req *backend.QueryDataRequest) (*backend.QueryDataResponse, error) {
+func (d *GT7TelemetryDatasource) QueryData(ctx context.Context, req *backend.QueryDataRequest) (*backend.QueryDataResponse, error) {
 	log.DefaultLogger.Info("QueryData called", "request", req)
 
 	// create response struct
@@ -76,7 +99,7 @@ type queryModel struct {
 	Telemetry     string `json:"telemetry"`
 }
 
-func (d *SimracingTelemetryDatasource) query(_ context.Context, pCtx backend.PluginContext, query backend.DataQuery) backend.DataResponse {
+func (d *GT7TelemetryDatasource) query(_ context.Context, pCtx backend.PluginContext, query backend.DataQuery) backend.DataResponse {
 	response := backend.DataResponse{}
 
 	// Unmarshal the JSON into our queryModel.
@@ -123,7 +146,7 @@ func (d *SimracingTelemetryDatasource) query(_ context.Context, pCtx backend.Plu
 // The main use case for these health checks is the test button on the
 // datasource configuration page which allows users to verify that
 // a datasource is working as expected.
-func (d *SimracingTelemetryDatasource) CheckHealth(_ context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
+func (d *GT7TelemetryDatasource) CheckHealth(_ context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
 	log.DefaultLogger.Info("CheckHealth called", "request", req)
 
 	var status = backend.HealthStatusOk
@@ -137,7 +160,7 @@ func (d *SimracingTelemetryDatasource) CheckHealth(_ context.Context, req *backe
 
 // SubscribeStream is called when a client wants to connect to a stream. This callback
 // allows sending the first message.
-func (d *SimracingTelemetryDatasource) SubscribeStream(_ context.Context, req *backend.SubscribeStreamRequest) (*backend.SubscribeStreamResponse, error) {
+func (d *GT7TelemetryDatasource) SubscribeStream(_ context.Context, req *backend.SubscribeStreamRequest) (*backend.SubscribeStreamResponse, error) {
 	log.DefaultLogger.Info("SubscribeStream called", "request", req)
 
 	status := backend.SubscribeStreamStatusOK
@@ -148,14 +171,27 @@ func (d *SimracingTelemetryDatasource) SubscribeStream(_ context.Context, req *b
 
 // RunStream is called once for any open channel. Results are shared with everyone
 // subscribed to the same channel.
-func (d *SimracingTelemetryDatasource) RunStream(ctx context.Context, req *backend.RunStreamRequest, sender *backend.StreamSender) error {
+func (d *GT7TelemetryDatasource) RunStream(ctx context.Context, req *backend.RunStreamRequest, sender *backend.StreamSender) error {
 	log.DefaultLogger.Info("RunStream called", "request", req)
 
+	// Check if any existing stream exists and close it.
+	if d.streamConn != nil {
+		d.streamConn.Close()
+		d.streamConn = nil
+	}
+
+	if d.heartbeatConn != nil {
+		d.heartbeatConn.Close()
+		d.heartbeatConn = nil
+	}
+
+	heartbeatConnChan := make(chan *net.UDPConn)
+	streamConnChan := make(chan *net.UDPConn)
 	gt7TelemetryChan := make(chan gt7.TelemetryFrame)
 	gt7TelemetryErrorChan := make(chan error)
 
 	if req.Path == "gt7" {
-		go gt7.RunTelemetryServer(gt7TelemetryChan, gt7TelemetryErrorChan)
+		go gt7.RunTelemetryServer(d.playstationIP, gt7TelemetryChan, gt7TelemetryErrorChan, heartbeatConnChan, streamConnChan)
 	}
 
 	lastTimeSent := time.Now()
@@ -165,6 +201,13 @@ func (d *SimracingTelemetryDatasource) RunStream(ctx context.Context, req *backe
 		select {
 		case <-ctx.Done():
 			log.DefaultLogger.Info("Context done, finish streaming", "path", req.Path)
+			if d.streamConn != nil {
+				d.streamConn.Close()
+			}
+			if d.heartbeatConn != nil {
+				d.heartbeatConn.Close()
+				d.heartbeatConn = nil
+			}
 			return nil
 
 		case telemetryFrame := <-gt7TelemetryChan:
@@ -181,13 +224,21 @@ func (d *SimracingTelemetryDatasource) RunStream(ctx context.Context, req *backe
 				continue
 			}
 
-		}
+		case hbConn := <-heartbeatConnChan:
+			d.heartbeatConn = hbConn
 
+		case strConn := <-streamConnChan:
+			d.streamConn = strConn
+
+		case err := <-gt7TelemetryErrorChan:
+			log.DefaultLogger.Error("Error from telemetry server", "error", err)
+			return err
+		}
 	}
 }
 
 // PublishStream is called when a client sends a message to the stream.
-func (d *SimracingTelemetryDatasource) PublishStream(_ context.Context, req *backend.PublishStreamRequest) (*backend.PublishStreamResponse, error) {
+func (d *GT7TelemetryDatasource) PublishStream(_ context.Context, req *backend.PublishStreamRequest) (*backend.PublishStreamResponse, error) {
 	log.DefaultLogger.Info("PublishStream called", "request", req)
 
 	// Do not allow publishing at all.

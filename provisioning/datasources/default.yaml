@@ -1,7 +1,11 @@
 apiVersion: 1
 
 datasources:
-  - name: Simracing Telemetry
+  - name: Gran Turismo 7 Telemetry
     type: gt7-telemetry
     isDefault: true
     uid: bdnzx5qev9fy8a
+    jsonData:
+      playstationIP: "192.168.1.8"  # Replace with your default PlayStation IP
+    version: 1
+    editable: true

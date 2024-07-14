@@ -1,18 +1,18 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
-  "name": "Simracing Telemetry",
+  "name": "Gran Turismo 7 Telemetry",
   "id": "gt7-telemetry",
   "metrics": true,
   "backend": true,
-  "executable": "gpx_simracing-telemetry-datasource",
+  "executable": "gpx_gt7_telemetry",
   "info": {
-    "description": "Plugin for visualizing telemetry data from simracing titles.",
+    "description": "Plugin for visualizing telemetry data from Gran Turismo 7.",
     "author": {
-      "name": "Alexander Zobnin",
+      "name": "Matteo Di Iorio",
       "url": "https://github.com/splicer3"
     },
-    "keywords": ["simracing", "dirt rally", "iRacing", "forza horizon", "assetto corsa", "gran turismo"],
+    "keywords": ["gran turismo"],
     "logos": {
       "small": "img/logo.svg",
       "large": "img/logo.svg"
@@ -32,36 +32,6 @@
     "updated": "%TODAY%"
   },
   "includes": [
-    {
-      "type": "dashboard",
-      "name": "ACC Basic",
-      "path": "dashboards/ACC/ACC_Basic.json"
-    },
-    {
-      "type": "dashboard",
-      "name": "ACC Advanced",
-      "path": "dashboards/ACC/ACC_Advanced.json"
-    },
-    {
-      "type": "dashboard",
-      "name": "ACC Race Stats",
-      "path": "dashboards/ACC/ACC_Race_Stats.json"
-    },
-    {
-      "type": "dashboard",
-      "name": "ACC Suspension",
-      "path": "dashboards/ACC/ACC_Suspension.json"
-    },
-    {
-      "type": "dashboard",
-      "name": "iRacing Basic",
-      "path": "dashboards/iRacing/iRacing_Basic.json"
-    },
-    {
-      "type": "dashboard",
-      "name": "Forza Basic",
-      "path": "dashboards/Forza/Forza_Basic.json"
-    },
     {
       "type": "dashboard",
       "name": "Gran Turismo 7",

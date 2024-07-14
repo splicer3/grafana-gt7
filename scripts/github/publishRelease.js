@@ -29,7 +29,7 @@ async function main() {
     process.exit(1);
   }
 
-  const releaseNotes = `# Grafana Simracing Telemetry ${releaseVersion}`;
+  const releaseNotes = `# Grafana GT7 Telemetry ${releaseVersion}`;
   const preRelease = /(alpha|beta)/.test(releaseVersion);
 
   let releaseId;
@@ -50,7 +50,7 @@ async function main() {
     let releaseCommitHash;
     try {
       const tags = await github.client.get(`tags`);
-      const releaseTag = tags.data.find(t => t.name === `v${releaseVersion}`);
+      const releaseTag = tags.data.find((t) => t.name === `v${releaseVersion}`);
       releaseCommitHash = releaseTag.commit.sha;
       console.log('Tag found', releaseTag.name, releaseCommitHash);
     } catch (reason) {
@@ -102,8 +102,8 @@ async function main() {
     );
     // Upload package sha1 checksum
     await publishAssets(
-        `${PLUGIN_PACKAGE_NAME}-${releaseVersion}.zip.sha1`,
-        `https://uploads.github.com/repos/${PLUGIN_OWNER}/${PLUGIN_REPO}/releases/${releaseId}/assets`
+      `${PLUGIN_PACKAGE_NAME}-${releaseVersion}.zip.sha1`,
+      `https://uploads.github.com/repos/${PLUGIN_OWNER}/${PLUGIN_REPO}/releases/${releaseId}/assets`
     );
     // Upload package info with md5 checksum
     await publishAssets(
@@ -112,8 +112,8 @@ async function main() {
     );
     // Upload bundled Grafana
     await publishAssets(
-        `grafana-bundled.windows-amd64.zip`,
-        `https://uploads.github.com/repos/${PLUGIN_OWNER}/${PLUGIN_REPO}/releases/${releaseId}/assets`
+      `grafana-bundled.windows-amd64.zip`,
+      `https://uploads.github.com/repos/${PLUGIN_OWNER}/${PLUGIN_REPO}/releases/${releaseId}/assets`
     );
   } catch (reason) {
     console.error(reason);

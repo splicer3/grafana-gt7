@@ -15,10 +15,10 @@ func main() {
 	// to exit by itself using os.Exit. Manage automatically manages life cycle
 	// of datasource instances. It accepts datasource instance factory as first
 	// argument. This factory will be automatically called on incoming request
-	// from Grafana to create different instances of SimracingTelemetryDatasource (per datasource
+	// from Grafana to create different instances of GT7TelemetryDatasource (per datasource
 	// ID). When datasource configuration changed Dispose method will be called and
-	// new datasource instance created using NewSimracingTelemetryDatasource factory.
-	if err := datasource.Manage(PLUGIN_ID, NewSimracingTelemetryDatasource, datasource.ManageOpts{}); err != nil {
+	// new datasource instance created using NewGT7TelemetryDatasource factory.
+	if err := datasource.Manage(PLUGIN_ID, NewGT7TelemetryDatasource, datasource.ManageOpts{}); err != nil {
 		log.DefaultLogger.Error(err.Error())
 		os.Exit(1)
 	}

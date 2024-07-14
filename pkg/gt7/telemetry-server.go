@@ -10,7 +10,6 @@ import (
 const (
 	heartbeatPort = "33739"
 	serverPort    = "33740"
-	playstationIP = "192.168.1.8"
 )
 
 func sendHeartBeat(conn *net.UDPConn) {
@@ -21,8 +20,11 @@ func sendHeartBeat(conn *net.UDPConn) {
 	}
 }
 
-func RunTelemetryServer(ch chan TelemetryFrame, errCh chan error) {
+func RunTelemetryServer(playstationIP string, ch chan TelemetryFrame, errCh chan error, hbChan chan *net.UDPConn, strChan chan *net.UDPConn) {
 	// Heartbeat connection setup
+	if playstationIP == "" {
+		playstationIP = "192.168.1.5"
+	}
 	heartbeatAddr, err := net.ResolveUDPAddr("udp4", net.JoinHostPort(playstationIP, heartbeatPort))
 	if err != nil {
 		errCh <- fmt.Errorf("heartbeat address resolution failed: %v", err)
@@ -35,6 +37,7 @@ func RunTelemetryServer(ch chan TelemetryFrame, errCh chan error) {
 		return
 	}
 	defer heartbeatConn.Close()
+	hbChan <- heartbeatConn
 
 	// Server connection setup
 	serverAddr, err := net.ResolveUDPAddr("udp4", net.JoinHostPort("", serverPort))
@@ -49,8 +52,9 @@ func RunTelemetryServer(ch chan TelemetryFrame, errCh chan error) {
 		return
 	}
 	defer serverConn.Close()
+	strChan <- serverConn
 
-	log.DefaultLogger.Info("Starting telemetry server for Gran Turismo 7")
+	log.DefaultLogger.Info("Starting telemetry server for Gran Turismo 7", "PlaystationIP", playstationIP)
 
 	buffer := make([]byte, 4096)
 	lastHeartbeatTime := time.Now()
