@@ -8,4 +8,4 @@ providers:
     allowUiUpdates: true
     updateIntervalSeconds: 60
     options:
-      path: ../data/plugins/alexanderzobnin-simracingtelemetry-datasource/dashboards
+      path: ../data/plugins/gt7-telemetry/dashboards

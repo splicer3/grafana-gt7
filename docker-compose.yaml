@@ -5,11 +5,11 @@ services:
       - "3000:3000"
       - "33740:33740/udp"
     volumes:
-      - ./dist:/var/lib/grafana/plugins/alexanderzobnin-simracingtelemetry-datasource
+      - ./dist:/var/lib/grafana/plugins/gt7-telemetry
       - ./provisioning:/etc/grafana/provisioning
       - grafana-storage:/var/lib/grafana
     environment:
-      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=alexanderzobnin-simracingtelemetry-datasource
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=gt7-telemetry
     user: "472"
 
 volumes:

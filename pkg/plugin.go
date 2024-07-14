@@ -5,11 +5,8 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"github.com/alexanderzobnin/grafana-simracing-telemetry/pkg/gt7"
+	"github.com/splicer3/grafana-gt7/pkg/gt7"
 	"time"
-
-	"github.com/alexanderzobnin/grafana-simracing-telemetry/pkg/dirtrally"
-	"github.com/alexanderzobnin/grafana-simracing-telemetry/pkg/forza"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
@@ -154,20 +151,10 @@ func (d *SimracingTelemetryDatasource) SubscribeStream(_ context.Context, req *b
 func (d *SimracingTelemetryDatasource) RunStream(ctx context.Context, req *backend.RunStreamRequest, sender *backend.StreamSender) error {
 	log.DefaultLogger.Info("RunStream called", "request", req)
 
-	telemetryChan := make(chan dirtrally.TelemetryFrame)
-	telemetryErrorChan := make(chan error)
-
-	forzaTelemetryChan := make(chan forza.TelemetryFrame)
-	forzaTelemetryErrorChan := make(chan error)
-
 	gt7TelemetryChan := make(chan gt7.TelemetryFrame)
 	gt7TelemetryErrorChan := make(chan error)
 
-	if req.Path == "dirtRally2" {
-		go dirtrally.RunTelemetryServer(telemetryChan, telemetryErrorChan)
-	} else if req.Path == "forzaHorizon5" {
-		go forza.RunTelemetryServer(forzaTelemetryChan, forzaTelemetryErrorChan)
-	} else if req.Path == "gt7" {
+	if req.Path == "gt7" {
 		go gt7.RunTelemetryServer(gt7TelemetryChan, gt7TelemetryErrorChan)
 	}
 
@@ -179,34 +166,6 @@ func (d *SimracingTelemetryDatasource) RunStream(ctx context.Context, req *backe
 		case <-ctx.Done():
 			log.DefaultLogger.Info("Context done, finish streaming", "path", req.Path)
 			return nil
-
-		case telemetryFrame := <-telemetryChan:
-			if time.Now().Before(lastTimeSent.Add(time.Second / 60)) {
-				// Drop frame
-				continue
-			}
-
-			frame := dirtrally.TelemetryToDataFrame(telemetryFrame)
-			lastTimeSent = time.Now()
-			err := sender.SendFrame(frame, data.IncludeAll)
-			if err != nil {
-				log.DefaultLogger.Error("Error sending frame", "error", err)
-				continue
-			}
-
-		case telemetryFrame := <-forzaTelemetryChan:
-			if time.Now().Before(lastTimeSent.Add(time.Second / 60)) {
-				// Drop frame
-				continue
-			}
-
-			frame := forza.TelemetryToDataFrame(telemetryFrame)
-			lastTimeSent = time.Now()
-			err := sender.SendFrame(frame, data.IncludeAll)
-			if err != nil {
-				log.DefaultLogger.Error("Error sending frame", "error", err)
-				continue
-			}
 
 		case telemetryFrame := <-gt7TelemetryChan:
 			if time.Now().Before(lastTimeSent.Add(time.Second / 60)) {

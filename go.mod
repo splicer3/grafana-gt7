@@ -1,14 +1,11 @@
-module github.com/alexanderzobnin/grafana-simracing-telemetry
+module github.com/splicer3/grafana-gt7
 
 go 1.17
 
 require (
-	github.com/alexeymaximov/go-bio v0.1.0
 	github.com/grafana/grafana-plugin-sdk-go v0.105.0
 	github.com/magefile/mage v1.11.0
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
-	golang.org/x/sys v0.0.0-20210309074719-68d13333faf2
-	golang.org/x/text v0.3.3
 )
 
 require (
@@ -38,10 +35,12 @@ require (
 	github.com/prometheus/common v0.23.0 // indirect
 	github.com/prometheus/procfs v0.6.0 // indirect
 	golang.org/x/net v0.0.0-20201021035429-f5854403a974 // indirect
+	golang.org/x/sys v0.0.0-20210309074719-68d13333faf2 // indirect
+	golang.org/x/text v0.3.3 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/genproto v0.0.0-20200911024640-645f7a48b24f // indirect
 	google.golang.org/grpc v1.37.1 // indirect
 	google.golang.org/protobuf v1.26.0 // indirect
 )
 
-replace github.com/alexeymaximov/go-bio v0.1.0 => github.com/alexanderzobnin/go-bio v0.1.1-0.20210702075309-d3abeb65f6d4
+replace github.com/alexeymaximov/go-bio v0.1.0 => github.com/splicer3/go-bio v0.1.1-0.20210702075309-d3abeb65f6d4

@@ -10,5 +10,5 @@ providers:
     updateIntervalSeconds: 10
     allowUiUpdates: true
     options:
-      path: /var/lib/grafana/plugins/alexanderzobnin-simracingtelemetry-datasource/dashboards
+      path: /var/lib/grafana/plugins/gt7-telemetry/dashboards
       foldersFromFilesStructure: true

@@ -2,9 +2,9 @@ const GithubClient = require('./githubClient');
 const fs = require('fs');
 const path = require('path');
 
-const PLUGIN_OWNER = 'alexanderzobnin';
-const PLUGIN_REPO = 'grafana-simracing-telemetry';
-const PLUGIN_PACKAGE_NAME = 'alexanderzobnin-simracingtelemetry-datasource';
+const PLUGIN_OWNER = 'matteodiiorio';
+const PLUGIN_REPO = 'grafana-gt7';
+const PLUGIN_PACKAGE_NAME = 'gt7-telemetry';
 
 const github = new GithubClient(PLUGIN_OWNER, PLUGIN_REPO, true);
 

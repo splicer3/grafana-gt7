@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
   "name": "Simracing Telemetry",
-  "id": "alexanderzobnin-simracingtelemetry-datasource",
+  "id": "gt7-telemetry",
   "metrics": true,
   "backend": true,
   "executable": "gpx_simracing-telemetry-datasource",
@@ -10,7 +10,7 @@
     "description": "Plugin for visualizing telemetry data from simracing titles.",
     "author": {
       "name": "Alexander Zobnin",
-      "url": "https://github.com/alexanderzobnin"
+      "url": "https://github.com/splicer3"
     },
     "keywords": ["simracing", "dirt rally", "iRacing", "forza horizon", "assetto corsa", "gran turismo"],
     "logos": {
@@ -20,11 +20,11 @@
     "links": [
       {
         "name": "Website",
-        "url": "https://github.com/alexanderzobnin/grafana-simracing-telemetry"
+        "url": "https://github.com/splicer3/grafana-gt7"
       },
       {
         "name": "License",
-        "url": "https://github.com/alexanderzobnin/grafana-simracing-telemetry/blob/master/LICENSE"
+        "url": "https://github.com/splicer3/grafana-gt7/blob/master/LICENSE"
       }
     ],
     "screenshots": [],
