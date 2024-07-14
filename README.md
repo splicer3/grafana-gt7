@@ -12,7 +12,6 @@ The **main goal** is to create a Docker Compose file with as little needed know-
 This would allow the project to run practically anywhere with as little setup as possible, bar for the Playstation's local IP.
 
 The current to-do list is as follows:
-- **Top priority**: make the PS IP address configurable, either from the data source itself or from the docker compose file through an environment variable
 - EV support (would be helpful to find a way to change units dynamically in Grafana)
 - Additional flags decoding and visualisation (like TCS, ABS flags)
 - A better lap implementation overall (like better conversion of laptimes)
@@ -20,9 +19,10 @@ The current to-do list is as follows:
 
 ## Features
 
-- Real-time telemetry data visualization
+- Real-time lightweight telemetry data visualization
 - Highly customizable dashboard, but with a default one provisioned at Docker Compose startup.
 - make-release shell script to create a zip file with everything needed to run it on Docker.
+- Playstation's IP editable through Grafana data source options
 
 ## Supported titles
 
@@ -43,9 +43,14 @@ Literally anything that can run Docker. Alternatively, make-release.sh can gener
 5. Wait for the script to finish. The zip file containing the required files will be generated in the project's root.
 6. Unzip the file in any directory on your target machine.
 7. Run `docker compose up -d`, or `docker compose up -d --build` if you made any changes to the code.
-8. Connect to `localhost:3000` and enjoy Grafana with GT7 telemetry data! Just go in the GT7 folder in Dashboards to find the default dashboard.
+8. Connect to `localhost:3000`, and log `username: admin` and `password: admin` as always with Grafana.
+9. Go to data source options, find Gran Turismo 7 Telemetry and change the Playstation IP field to your own Playstation's IP
+10. Go to dashboards and either build one from scratch or use the default provisioned one.
+
 
 ## Credits
-**Alexander Zobnin** for creating the [original simracing telemetry plugin for Grafana](https://github.com/splicer3/grafana-gt7).
-**Nenkai** for his work on GT7 telemetry raw data and decoding.
+**Alexander Zobnin** for creating the [original simracing telemetry plugin for Grafana](https://github.com/splicer3/grafana-gt7). 
+
+**Nenkai** for his work on GT7 telemetry raw data and decoding. 
+
 **Matthias Küch** for his work on the [GT7 Python telemetry software](https://github.com/snipem/gt7dashboard), which I largely used to understand how to decrypt the incoming GT7 packets.
