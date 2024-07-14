@@ -7,7 +7,7 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
-const PLUGIN_ID = "alexanderzobnin-simracingtelemetry-datasource"
+const PLUGIN_ID = "gt7-telemetry"
 
 func main() {
 	// Start listening to requests sent from Grafana. This call is blocking so

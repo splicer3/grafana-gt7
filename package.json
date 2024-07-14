@@ -1,7 +1,7 @@
 {
-  "name": "grafana-simracing-telemetry",
-  "version": "1.0.0",
-  "description": "Plugin for fetching telemetry data from simracing titles",
+  "name": "gt7-telemetry",
+  "version": "0.2.0",
+  "description": "Plugin for fetching telemetry data from Gran Turismo 7.",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
     "test": "grafana-toolkit plugin:test",
@@ -10,7 +10,7 @@
     "sign": "grafana-toolkit plugin:sign",
     "start": "yarn watch"
   },
-  "author": "Alexander Zobnin",
+  "author": "Matteo Di Iorio",
   "license": "Apache-2.0",
   "devDependencies": {
     "@grafana/data": "8.0.3",
