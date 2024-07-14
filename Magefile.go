@@ -22,12 +22,12 @@ func LinuxARM64() {
 
 func Linux() {
 	b := build.Build{}
-	mg.Deps(b.Linux())
+	mg.Deps(b.Linux)
 }
 
 func LinuxARM() {
 	b := build.Build{}
-	mg.Deps(b.LinuxARM())
+	mg.Deps(b.LinuxARM)
 }
 
 func Windows() { //revive:disable-line

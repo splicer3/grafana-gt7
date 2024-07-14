@@ -11,6 +11,11 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # Display the options to the user
+echo -e  "${BLUE}Which version are you releasing? (Omit the v)${NC}"
+echo "Version:  "
+
+read -r version
+
 echo -e  "${BLUE}Supported builds:${NC}\nWindows\tLinuxARM64\tLinuxARM\tLinux"
 echo "Your choice: "
 
@@ -26,7 +31,7 @@ else
 fi
 
 # Setting the folder name
-releaseFolder="${build_os}Release"
+releaseFolder="v${version}${build_os}Release"
 
 # Making the folder
 echo "${GREEN}Making the ${build_os} release folder${NC}"
@@ -46,6 +51,6 @@ cp -r ./provisioning "${releaseFolder}"
 echo "${GREEN}Copying docker-compose.yaml...r${NC}"
 cp docker-compose.yaml "${releaseFolder}"
 
-zip -r "grafana-gt7-${build_os}-releaseDocker.zip" "${releaseFolder}"
+zip -r "grafana-gt7-v${version}-${build_os}-release.zip" "${releaseFolder}"
 
 rm -rf ./dist
