@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 11,
+  "id": 2,
   "links": [],
   "panels": [
     {
@@ -1914,6 +1914,179 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "gt7-telemetry",
+        "uid": "bdnzx5qev9fy8a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "neutral": 0
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 0,
+                  "text": "-"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "max": 4,
+          "min": -4,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "semi-dark-yellow",
+                "value": 2
+              },
+              {
+                "color": "red",
+                "value": 3
+              }
+            ]
+          },
+          "unit": "accG"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 3,
+        "y": 14
+      },
+      "id": 54,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "gt7-telemetry",
+            "uid": "bdnzx5qev9fy8a"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "GForceZ",
+          "withStreaming": true
+        }
+      ],
+      "title": "G Force Longitudinal",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "gt7-telemetry",
+        "uid": "bdnzx5qev9fy8a"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "neutral": 0
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 0,
+                  "text": "-"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "max": 4,
+          "min": -4,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "semi-dark-yellow",
+                "value": 2
+              },
+              {
+                "color": "red",
+                "value": 3
+              }
+            ]
+          },
+          "unit": "accG"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 8,
+        "y": 14
+      },
+      "id": 55,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "gt7-telemetry",
+            "uid": "bdnzx5qev9fy8a"
+          },
+          "graph": false,
+          "refId": "A",
+          "source": "gt7",
+          "telemetry": "GForceX",
+          "withStreaming": true
+        }
+      ],
+      "title": "G Force Lateral",
+      "type": "gauge"
+    },
+    {
       "datasource": {},
       "fieldConfig": {
         "defaults": {
@@ -1945,8 +2118,8 @@
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 3,
-        "y": 14
+        "x": 0,
+        "y": 17
       },
       "id": 16,
       "maxDataPoints": 2,
@@ -1999,6 +2172,6 @@
   "timezone": "",
   "title": "Gran Turismo 7",
   "uid": "cdqxu70j3pn28c",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }

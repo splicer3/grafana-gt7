@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/splicer3/grafana-gt7/pkg/gt7"
+	"github.com/splicer3/grafana-gt7/pkg/gt7/packet"
 	"net"
 	"time"
 
@@ -172,20 +173,9 @@ func (d *GT7TelemetryDatasource) SubscribeStream(_ context.Context, req *backend
 func (d *GT7TelemetryDatasource) RunStream(ctx context.Context, req *backend.RunStreamRequest, sender *backend.StreamSender) error {
 	log.DefaultLogger.Info("RunStream called", "request", req)
 
-	// Check if any existing stream exists and close it.
-	if d.streamConn != nil {
-		d.streamConn.Close()
-		d.streamConn = nil
-	}
-
-	if d.heartbeatConn != nil {
-		d.heartbeatConn.Close()
-		d.heartbeatConn = nil
-	}
-
 	heartbeatConnChan := make(chan *net.UDPConn)
 	streamConnChan := make(chan *net.UDPConn)
-	gt7TelemetryChan := make(chan gt7.TelemetryFrame)
+	gt7TelemetryChan := make(chan packet.TelemetryFrame)
 	gt7TelemetryErrorChan := make(chan error)
 
 	if req.Path == "gt7" {
@@ -199,13 +189,6 @@ func (d *GT7TelemetryDatasource) RunStream(ctx context.Context, req *backend.Run
 		select {
 		case <-ctx.Done():
 			log.DefaultLogger.Info("Context done, finish streaming", "path", req.Path)
-			if d.streamConn != nil {
-				d.streamConn.Close()
-			}
-			if d.heartbeatConn != nil {
-				d.heartbeatConn.Close()
-				d.heartbeatConn = nil
-			}
 			return nil
 
 		case telemetryFrame := <-gt7TelemetryChan:
@@ -214,7 +197,7 @@ func (d *GT7TelemetryDatasource) RunStream(ctx context.Context, req *backend.Run
 				continue
 			}
 
-			frame := gt7.TelemetryToDataFrame(telemetryFrame)
+			frame := packet.TelemetryToDataFrame(telemetryFrame)
 			lastTimeSent = time.Now()
 			err := sender.SendFrame(frame, data.IncludeAll)
 			if err != nil {

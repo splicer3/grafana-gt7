@@ -3,6 +3,7 @@ package gt7
 import (
 	"fmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
+	"github.com/splicer3/grafana-gt7/pkg/gt7/packet"
 	"net"
 	"time"
 )
@@ -20,7 +21,8 @@ func sendHeartBeat(conn *net.UDPConn) {
 	}
 }
 
-func RunTelemetryServer(playstationIP string, ch chan TelemetryFrame, errCh chan error, hbChan chan *net.UDPConn, strChan chan *net.UDPConn) {
+func RunTelemetryServer(playstationIP string, ch chan packet.TelemetryFrame, errCh chan error, hbChan chan *net.UDPConn, strChan chan *net.UDPConn) {
+	isFirstTime := true
 	// Heartbeat connection setup
 	if playstationIP == "" {
 		playstationIP = "192.168.1.5"
@@ -80,7 +82,10 @@ func RunTelemetryServer(playstationIP string, ch chan TelemetryFrame, errCh chan
 		if n > 0 {
 			fmt.Printf("Read %v bytes\n", n)
 			packetBuffer := buffer[0:n]
-			p, err := ReadPacket(packetBuffer)
+			p, err := packet.ReadPacket(packetBuffer)
+			if isFirstTime {
+				isFirstTime = false
+			}
 			if err != nil {
 				log.DefaultLogger.Warn("ReadPacket failed", "err", err.Error())
 				return

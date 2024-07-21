@@ -1,4 +1,4 @@
-package gt7
+package packet
 
 import (
 	"encoding/binary"
@@ -76,12 +76,28 @@ type TelemetryFrame struct {
 	RotationPitch     float32
 	RotationYaw       float32
 	RotationRoll      float32
+	QuaternionScalar  float32
 	AngularVelocityX  float32
 	AngularVelocityY  float32
 	AngularVelocityZ  float32
+	LocalVelocityX    float32
+	LocalVelocityY    float32
+	LocalVelocityZ    float32
+	AccelerationX     float32
+	AccelerationY     float32
+	AccelerationZ     float32
+	GForceX           float32
+	GForceY           float32
+	GForceZ           float32
+	Roll              float32
+	Pitch             float32
+	Yaw               float32
 	IsPaused          bool
 	InRace            bool
 }
+
+// Necessary for acceleration calculation
+var previousLocalVelocity Vector3 = Vector3{0, 0, 0}
 
 func salsa20Dec(dat []byte) []byte {
 	keyStr := "Simulator Interface Packet GT7 ver 0.0"
@@ -166,6 +182,7 @@ func convertTelemetryValues(data []byte) *TelemetryFrame {
 		RotationPitch:     math.Float32frombits(binary.LittleEndian.Uint32(data[0x1C:0x20])),
 		RotationYaw:       math.Float32frombits(binary.LittleEndian.Uint32(data[0x20:0x24])),
 		RotationRoll:      math.Float32frombits(binary.LittleEndian.Uint32(data[0x24:0x28])),
+		QuaternionScalar:  math.Float32frombits(binary.LittleEndian.Uint32(data[0x28:0x2C])),
 		AngularVelocityX:  math.Float32frombits(binary.LittleEndian.Uint32(data[0x2C:0x30])),
 		AngularVelocityY:  math.Float32frombits(binary.LittleEndian.Uint32(data[0x30:0x34])),
 		AngularVelocityZ:  math.Float32frombits(binary.LittleEndian.Uint32(data[0x34:0x38])),
@@ -191,6 +208,45 @@ func convertTelemetryValues(data []byte) *TelemetryFrame {
 		returnedFrame.TyreSlipRatioRL = -1
 		returnedFrame.TyreSlipRatioRR = -1
 	}
+
+	// Calculate Local Velocity, Acceleration, G-Forces, and Roll/Pitch/Yaw
+	q := Quaternion{
+		float64(returnedFrame.RotationPitch),
+		float64(returnedFrame.RotationYaw),
+		float64(returnedFrame.RotationRoll),
+		float64(returnedFrame.QuaternionScalar), // We don't have the scalar component, so we'll use 0
+	}
+	qc := quatConj(q)
+
+	v := Vector3{float64(returnedFrame.VelocityX), float64(returnedFrame.VelocityY), float64(returnedFrame.VelocityZ)}
+	localV := quatRot(v, qc)
+
+	returnedFrame.LocalVelocityX = float32(localV[0])
+	returnedFrame.LocalVelocityY = float32(localV[1])
+	returnedFrame.LocalVelocityZ = float32(localV[2])
+
+	// Calculating dv
+	dVelocity := sub(localV, previousLocalVelocity)
+
+	// NOTE: The first time this will be completely wrong
+	Acceleration := scale(dVelocity, 60)
+
+	previousLocalVelocity = localV
+
+	returnedFrame.AccelerationX = float32(Acceleration[0])
+	returnedFrame.AccelerationY = float32(Acceleration[1])
+	returnedFrame.AccelerationZ = float32(Acceleration[2])
+
+	// G-Forces (assuming 1G = 9.81 m/s^2)
+	returnedFrame.GForceX = returnedFrame.AccelerationX / 9.81
+	returnedFrame.GForceY = returnedFrame.AccelerationY / 9.81
+	returnedFrame.GForceZ = returnedFrame.AccelerationZ / 9.81
+
+	// Roll, Pitch, Yaw
+	roll, pitch, yaw := rollPitchYaw(q)
+	returnedFrame.Roll = float32(roll * 180 / math.Pi)
+	returnedFrame.Pitch = float32(pitch * 180 / math.Pi)
+	returnedFrame.Yaw = float32(yaw * 180 / math.Pi)
 
 	return &returnedFrame
 }

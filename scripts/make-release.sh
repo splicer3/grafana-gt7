@@ -31,7 +31,7 @@ else
 fi
 
 # Setting the folder name
-releaseFolder="v${version}${build_os}Release"
+releaseFolder="Grafana GT7 - v${version}${build_os}Release"
 
 # Making the folder
 echo "${GREEN}Making the ${build_os} release folder${NC}"
