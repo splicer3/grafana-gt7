@@ -30,6 +30,31 @@ else
     exit 1
 fi
 
+# Set the environment variables based on the build target
+case "$build_os" in
+    "Windows")
+        export GOARCH=amd64
+        export GOOS=windows
+        mage_target="Windows"
+        ;;
+    "LinuxARM64")
+        export GOARCH=arm64
+        export GOOS=linux
+        mage_target="LinuxARM64"
+        ;;
+    "LinuxARM")
+        export GOARCH=arm
+        export GOARM=7
+        export GOOS=linux
+        mage_target="LinuxARM"
+        ;;
+    "Linux")
+        export GOARCH=amd64
+        export GOOS=linux
+        mage_target="Linux"
+        ;;
+esac
+
 # Setting the folder name
 releaseFolder="Grafana GT7 - v${version}${build_os}Release"
 
@@ -39,7 +64,7 @@ cd ..
 mkdir -p "${releaseFolder}"
 
 npm run build
-mage "${build_os}"
+mage "${mage_target}"
 
 # Including files
 echo "${GREEN}Copying dist...r${NC}"
